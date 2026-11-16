@@ -199,6 +199,23 @@ For example, which principles align with how Java requires the parent's construc
 
 Each time you encounter new code or a UML class diagram, you should begin to assess its design through this new perspective based on the SOLID principles.
 
+**My answer: Java features and SOLID**
+
+- **SRP:** Classes and packages let related behavior live together. `private`
+  fields support encapsulation, so a class can preserve its own invariants;
+  access control helps this design but does not guarantee a single responsibility.
+- **OCP:** A caller typed as an interface can use a new implementation without
+  changing its existing logic. Generic algorithms similarly accept new types
+  satisfying their bounds, such as `<T extends Comparable<T>>`.
+- **LSP:** Calling `super(...)` initializes the inherited part of a subclass and
+  helps establish superclass invariants. The subclass must still preserve the
+  superclass's behavioral contract; Java's type checks alone cannot ensure that.
+- **ISP:** Small interfaces such as `Iterable<T>` express one capability, so
+  clients need not depend on unrelated methods. A class can implement several
+  focused interfaces instead of exposing one oversized contract.
+- **DIP:** An interface can be a field or parameter type. A manager can receive
+  an `IWorker` and call `work()` without constructing or naming a concrete worker.
+
 ## 9.4. Exercises: applying the principles
 
 ### Applying the DIP in code
