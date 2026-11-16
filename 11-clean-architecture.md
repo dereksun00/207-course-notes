@@ -170,4 +170,18 @@ on the interfaces. A test driver can substitute an in-memory data access
 object and a recording output boundary.
 
 > Thought Question: Can you identify specific aspects of the design of the Clean Architecture that remind you of each SOLID principle?
- 
+
+**My answer:**
+
+- **SRP:** Controllers translate input, interactors execute use cases, presenters
+  format results, and data access handles persistence. Each has its own reason
+  to change.
+- **OCP:** A new data-access implementation or presenter can be supplied through
+  an existing boundary without rewriting the use case.
+- **LSP:** Every implementation of a boundary must honor its contract. An
+  in-memory data access object must behave as promised for the same requests,
+  including missing-data cases, so substituting it keeps the use case correct.
+- **ISP:** Boundaries expose the operations their clients need. A use case's
+  data-access interface need not expose every operation in the database API.
+- **DIP:** The use-case layer owns the output and data-access interfaces;
+  presenters and persistence classes implement them, keeping dependencies inward.
