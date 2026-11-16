@@ -46,6 +46,14 @@ When we create instances of the various classes shown above and connect them tog
 
 > Thought Question: Take a minute to study the diagram. Can you identify where the DIP has been applied to ensure that we are following the Dependency Rule?
 
+**My answer:** The use case depends on `Output Boundary` and `Data Access
+Interface`, both owned by the use-case layer. The outer `Presenter` and
+`Data Access` classes implement those interfaces. This reverses the source
+code dependency even when the use case calls outward at runtime. Likewise,
+the controller calls an `Input Boundary` instead of naming the concrete
+interactor, which implements it. Information flow and source dependencies
+therefore need not point in the same direction.
+
 ## 11.3. Clean Architecture By Layer
 Before we fully talk through how we construct the CA engine and trace the flow of control, let's quickly look at all the pieces that make up our CA engine. Refer to the diagram as you read about each piece. 
 
