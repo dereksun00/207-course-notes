@@ -251,6 +251,14 @@ public class Report {
 
 Which SOLID principle is most clearly violated here, and how would you fix it?
 
+**My answer:** This violates SRP: changing report content, file persistence,
+or email delivery are three independent reasons to modify `Report`. Keep
+`generate()` in `Report`, move saving to `ReportFileWriter`, and move email to
+`ReportEmailer`. The output classes accept generated text, so changing its
+format does not require changing delivery code. If a caller needs interchangeable
+outputs, give those classes a small `ReportOutput` interface and inject it into
+the caller; that also applies DIP.
+
 <details>
 <summary>Show answer</summary>
 
