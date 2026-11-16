@@ -22,6 +22,13 @@ The Clean Architecture has one rule, called the **"Dependency Rule"**. This rule
 
 > Review Question: Why shouldn't a high-level policy depend on a low-level policy?
 
+**My answer:** The business rule should survive changes to its UI, database,
+and other external details. A direct dependency on those details makes changes
+spread inward and makes isolated tests harder. Instead, the high-level layer
+owns an interface describing what it needs, and the low-level implementation
+depends on and implements that interface. The rule can then use an in-memory
+test implementation without changing its logic.
+
 This is often visualized through the following concentric ring diagram. The highest-level policies, the Entities, are at the core of the architecture, with the lowest-level policies, the Frameworks and Drivers, on the outside of the architecture.
 
 ![](https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg)
