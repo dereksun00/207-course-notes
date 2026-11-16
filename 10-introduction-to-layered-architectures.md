@@ -60,6 +60,11 @@ To support new user interactions, we write new event listeners and define how th
 
 > Review Question: Is an event listener a low-level or high-level policy?
 
+**My answer:** An event listener is a low-level policy because it sits near
+input, such as a button click. It should translate the event and delegate the
+business decision to a controller or use case, so changing the UI does not
+change that decision.
+
 ## 10.2. Layers and coupling
 
 Software developers have spent decades refining how to organize code. One widely adopted strategy is to structure programs into layers, where each layer has a specific role—such as managing the user interface, handling data storage, or implementing core logic.
