@@ -149,5 +149,25 @@ What this means is that we can create a different main component, sometimes call
 
 > Thought Question: Can you imagine how the code for constructing the CA engine might look in practice? We'll see concrete code examples soon, but for now it is a good exercise to think through your mental model of how our above conceptual discussion and the high-level UML class diagram of the CA engine might turn into concrete code.
 
+**My answer:** The main component constructs dependencies before their users
+and passes them into constructors. For example, with illustrative class names:
+
+```java
+ViewModel viewModel = new ViewModel();
+OutputBoundary presenter = new Presenter(viewModel);
+DataAccessInterface dataAccess = new FileDataAccess();
+InputBoundary interactor = new UseCaseInteractor(dataAccess, presenter);
+Controller controller = new Controller(interactor);
+View view = new View(controller, viewModel);
+view.show();
+```
+
+`Presenter` implements `OutputBoundary`, `FileDataAccess` implements
+`DataAccessInterface`, and `UseCaseInteractor` implements `InputBoundary`.
+The view observes the same view-model instance the presenter updates. Only
+this assembly code chooses concrete implementations; the use case depends
+on the interfaces. A test driver can substitute an in-memory data access
+object and a recording output boundary.
+
 > Thought Question: Can you identify specific aspects of the design of the Clean Architecture that remind you of each SOLID principle?
  
