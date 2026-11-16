@@ -40,6 +40,14 @@ Now that we’ve seen how layered architectures can naturally separate policies 
 
 > Thought Question: What might a “policy” look like in your code? Is it a method, a class, a rule enforced by a conditional, or something else? 
 
+**My answer:** A policy is a rule, and its representation depends on its size.
+A rule such as "do not renew an item with another member's hold" can be an
+`if` in a `renew` method. Related rules can live together in a use-case class,
+and a changing rule can be supplied through an interface. Its placement should
+follow its responsibility: business rules belong in the model or use case,
+while input formatting belongs near the view. The policy does not need a
+particular Java construct to count as a policy.
+
 ## 10.1. Event-driven programming: a network of objects
 
 Modern programs often respond to user actions—clicks, keystrokes, and other interactions. These are called events, and programs that react to them are known as event-driven.
