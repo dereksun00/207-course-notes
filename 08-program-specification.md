@@ -462,6 +462,35 @@ them.
 
 </details>
 
+**My answer to Question 2**
+
+1. The member is already logged in: `Library.login(memberNumber)` returned the
+   registered `Member`. `Catalogue.findItem(catalogueNumber)` locates the `Item`.
+2. If the item supports `Borrowable`, the caller supplies it to
+   `Member.placeHold(item)`. A `ReferenceItem` does not support that interface
+   and cannot be offered for borrowing or holds.
+3. `Member.placeHold` calls `item.placeHold(this)`. The concrete
+   `BorrowableItem` checks `isOnLoan()`, which reads its current borrower. If
+   there is no borrower, it rejects the hold and leaves the queue unchanged.
+4. For the loaned item in this scenario, `BorrowableItem` creates a `Hold`
+   referring to itself and the requesting member, and appends it to `holds`.
+   Storing it on the item keeps the request discoverable when the item returns.
+5. The item returns the `Hold` through `Member.placeHold` to the caller, which
+   can confirm that the request was recorded. The existing loan is unchanged.
+
+The diagram now has every responsibility needed by this walk-through:
+member lookup, item lookup, a loan-status query, hold creation, and persistent
+ownership of the queue. Repeating the scenario needs no new classes or methods.
+
+Two candidates for knowing loan status are the item and a central loan register.
+I chose `BorrowableItem`: keeping the borrower and `isOnLoan()` together avoids
+inconsistent duplicate state and makes an individual item's behavior simple.
+A separate `Loan`/loan-register design would make due dates, borrowing history,
+and reports across all items easier, but adds lookups and synchronization
+between the register and items. That becomes worthwhile if those requirements
+are added. A member could also track their borrowed items, but finding an
+arbitrary item's status would then require searching across members.
+
 ### Question 3: From a user story to a use case
 
 Consider a campus study-room booking application.
