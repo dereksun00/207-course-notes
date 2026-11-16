@@ -150,3 +150,13 @@ We'll explore Clean Architecture in more detail in the next chapter, as it will 
 
 > Thought Question: Recall that computer architecture also has a layered structure to it as we saw earlier, with applications built on top of the operating system, which is built on top of the hardware.
 > You'll find that the idea of layers shows up in many system design contexts. What is it about organizing systems in this way that makes it such a common design?
+
+**My answer:** Layers give each part a clear responsibility and hide details
+behind boundaries. A caller can understand an interface without knowing the
+implementation beneath it. This reduces coupling, makes pieces independently
+testable, and lets an implementation change while callers keep using the same
+contract. For example, an application can use operating-system file operations
+without knowing the disk controller. In Clean Architecture the dependencies
+are arranged toward stable business rules, so this separation also protects
+policy from changes to UI and storage. Extra layers have a cost in indirection;
+they are useful when the boundaries isolate meaningful responsibilities.
