@@ -27,19 +27,85 @@ abstract class Item {
   + getCatalogueNumber() : String
 }
 
-' TODO: add boxes for Book and DVD. What differs between them — a whole class,
-'       or just the value of a loan-period field?
+enum ItemFormat {
+  BOOK
+  DVD
+}
 
-' TODO: reference-only items cannot be borrowed at all. Decide how to say that
-'       in the diagram: a subclass, or an interface (e.g. "Borrowable") that
-'       only some items realize?
+interface Borrowable {
+  + borrow(member : Member) : void
+  + returnItem() : void
+  + isOnLoan() : boolean
+  + placeHold(member : Member) : Hold
+}
 
-' TODO: add Member and Librarian. What do they have in common? Add the common
-'       supertype if you think one is warranted.
+class BorrowableItem {
+  - loanPeriodDays : int
+  - borrower : Member
+  - holds : List<Hold>
+  + borrow(member : Member) : void
+  + returnItem() : void
+  + isOnLoan() : boolean
+  + placeHold(member : Member) : Hold
+  + getLoanPeriodDays() : int
+}
 
-' TODO: add whatever represents a hold, and connect it to the classes that need
-'       to know about it.
+class ReferenceItem
 
-' TODO: add the arrows between all of your types.
+class Member {
+  - memberNumber : String
+  - lateFee : double
+  + placeHold(item : Borrowable) : Hold
+  + waiveLateFee() : void
+}
+
+class Librarian {
+  + addItem(item : Item, catalogue : Catalogue) : void
+  + waiveLateFee(member : Member) : void
+}
+
+class Catalogue {
+  - items : Map<String, Item>
+  + addItem(item : Item) : void
+  + findItem(catalogueNumber : String) : Item
+}
+
+class Library {
+  - members : Map<String, Member>
+  - catalogue : Catalogue
+  + login(memberNumber : String) : Member
+}
+
+class Hold {
+  - member : Member
+  - item : BorrowableItem
+}
+
+Item : - format : ItemFormat
+Item <|-- BorrowableItem
+Item <|-- ReferenceItem
+Borrowable <|.. BorrowableItem
+Item --> "1" ItemFormat : format
+Library --> "1" Catalogue
+Library --> "0..*" Member : registered members
+Catalogue --> "0..*" Item : indexed by unique catalogue number
+BorrowableItem --> "0..1" Member : current borrower
+BorrowableItem "1" *-- "0..*" Hold : ordered queue
+Hold --> "1" Member : requested by
+Member ..> Borrowable : places hold
+Librarian ..> Catalogue : adds item
+Librarian ..> Member : waives fee
+
+note right of BorrowableItem
+  Book: loanPeriodDays = 21
+  DVD: loanPeriodDays = 7
+  isOnLoan iff borrower != null
+  borrow requires no current borrower
+  placeHold requires isOnLoan()
+end note
+
+note bottom of Catalogue
+  addItem rejects duplicate catalogue numbers
+end note
 
 @enduml

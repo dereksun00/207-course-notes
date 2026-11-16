@@ -386,6 +386,48 @@ at
 it in IntelliJ with the **PlantUML Integration** (plantuml4idea) plugin
 installed and a live preview renders beside the file as you type.
 
+**My answer to Question 1**
+
+Nouns are underlined and verb phrases are bold in this copy of the specification:
+
+> A <u>library</u> lets <u>members</u> **borrow** <u>items</u>. Each <u>item</u>
+> **has** a <u>title</u> and a unique <u>catalogue number</u>. <u>Books</u> can
+> **be borrowed** for <u>three weeks</u>; <u>DVDs</u> can **be borrowed** for
+> <u>one week</u>. Some <u>items</u> are reference-only and **cannot be borrowed**
+> at all. <u>Members</u> **log in** with a <u>member number</u> and can **place a
+> hold** on an <u>item</u> that is currently **on loan**. <u>Librarians</u> can
+> **add** new <u>items</u> to the <u>catalogue</u> and can **waive** a
+> <u>member</u>'s <u>late fee</u>.
+
+Candidate classes: `Library`, `Catalogue`, `Item`, `BorrowableItem`,
+`ReferenceItem`, `Member`, `Librarian`, and `Hold`. `Borrowable` is an interface
+for operations supported only by items that can circulate.
+
+Rejected as separate classes: title, catalogue number, member number, and late
+fee are attributes; three weeks and one week are loan-period values. Books and
+DVDs are formats, represented by an `ItemFormat` enum and a loan-period field
+(21 days for books, 7 for DVDs). A reference-only book or DVD is a
+`ReferenceItem` with the appropriate format. Borrowing and logging in are
+operations, not entities. No separate person superclass is needed yet: the
+specification does not give members and librarians shared state or behavior.
+
+Responsibilities:
+
+| Verb phrase | Responsible class and collaborators |
+| --- | --- |
+| Log in with a member number | `Library.login` looks up a registered `Member`; other credentials are unspecified. |
+| Borrow an item | `BorrowableItem.borrow` records the member and rejects an existing loan; its loan period determines when it is due. |
+| Return an item | `BorrowableItem.returnItem` clears the borrower; holds remain available on the item. |
+| Know whether an item is on loan | `BorrowableItem.isOnLoan` checks whether its borrower exists. |
+| Place a hold on a loaned item | `Member.placeHold` delegates to `BorrowableItem.placeHold`, which checks the loan, creates a `Hold`, and retains it in its queue. |
+| Add a new item | `Librarian.addItem` calls `Catalogue.addItem`, which checks catalogue-number uniqueness. |
+| Waive a late fee | `Librarian.waiveLateFee` calls `Member.waiveLateFee` to clear the member's fee. |
+
+`BorrowableItem` and `ReferenceItem` inherit the common item attributes.
+Only `BorrowableItem` implements `Borrowable`; reference items have no borrow
+or hold operation. The completed diagram is in
+[the library PlantUML file](plantuml/exercises/library-uml-starter.puml).
+
 ### Question 2: Scenario walk-through
 
 Take the diagram you drew in Question 1 and walk through this scenario, step by
