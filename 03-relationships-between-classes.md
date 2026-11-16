@@ -899,6 +899,61 @@ headers, fields, and method signatures — you can leave the method bodies as
 
 ![UML diagram of an Account hierarchy](images/uml-accounts.png)
 
+**My declarations:** The solid arrows use `extends`; the dashed arrow uses
+`implements`. Method bodies below are placeholders because this question asks
+for declarations only. Each concrete subclass calls the superclass constructor.
+
+```java
+abstract class Account {
+    protected double balance;
+
+    public Account(double balance) {
+        this.balance = balance;
+    }
+
+    public void deposit(double amount) {
+        // ...
+    }
+
+    public abstract boolean withdraw(double amount);
+}
+
+interface InterestBearing {
+    void addInterest();
+}
+
+class ChequingAccount extends Account {
+    private double overdraftLimit;
+
+    public ChequingAccount(double balance) {
+        super(balance);
+    }
+
+    @Override
+    public boolean withdraw(double amount) {
+        throw new UnsupportedOperationException(); // Body omitted.
+    }
+}
+
+class SavingsAccount extends Account implements InterestBearing {
+    private double rate;
+
+    public SavingsAccount(double balance) {
+        super(balance);
+    }
+
+    @Override
+    public boolean withdraw(double amount) {
+        throw new UnsupportedOperationException(); // Body omitted.
+    }
+
+    @Override
+    public void addInterest() {
+        // ...
+    }
+}
+```
+
 <details>
 <summary>Show answer</summary>
 
