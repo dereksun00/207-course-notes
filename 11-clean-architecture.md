@@ -129,6 +129,12 @@ The following diagram is the same one we just looked at, but with the flow of co
 
 > Thought Question: Note how we never actually return anything to the Controller. What does this suggest about the return type of the method defined by the Input Boundary?
 
+**My answer:** In this design the input-boundary method returns `void`, for
+example `void execute(InputData input)`. The interactor passes its result to
+the output boundary, and the presenter updates the view model. The controller
+does not receive output data as a return value. A `void` method can still
+perform this work synchronously; it does not imply a separate thread.
+
 ## 11.5. The Main Component
 
 We now know the structure of the classes and interfaces involved, as well as how information flows through our CA engine, but how do we actually build our CA engine in the first place.
