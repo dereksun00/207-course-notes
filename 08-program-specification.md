@@ -523,3 +523,39 @@ Review your draft with these questions:
 * Have you avoided committing prematurely to UI widgets, classes, methods, or database details?
 
 As a scope check, compare the story above with "As a student, I want to manage all of my room bookings," which is likely an epic, and "Build the room-booking form," which is an implementation task. The exercise story sits between them: it expresses one useful, implementable user goal.
+
+**My answer to Question 3**
+
+- **Name:** Reserve a study room.
+- **Primary actor:** A student.
+- **Preconditions:** The student is signed in and has selected a room, date,
+  and time interval. The selected interval appeared available when chosen;
+  continued availability is not a precondition.
+- **Trigger:** The student requests the reservation of that room and interval.
+- **Success outcome:** One reservation for the student, room, and interval is
+  recorded; no reservation for that room overlaps it, and the student sees a
+  confirmation containing the reservation details.
+
+Main success scenario:
+
+1. The student requests a reservation for the selected room, date, and interval.
+2. The system validates that the selection identifies a room and a valid interval.
+3. The system checks current availability and records the reservation as one
+   indivisible operation, so competing requests cannot both reserve the room.
+4. The system displays a confirmation with the reserved room, date, and interval.
+
+Extensions:
+
+- **3a — The room became unavailable:** The system records no reservation for
+  this request and tells the student that the room is no longer available at
+  the selected time. The competing reservation is unchanged. The student may
+  choose another room or interval and start a new request.
+- **2a — The selected interval is invalid or in the past:** The system explains
+  the problem and asks for a valid interval. No reservation is created or
+  changed. The student may correct the selection and repeat step 1.
+
+This use case pursues one goal. The preconditions are existing facts, and the
+main steps describe observable responsibilities without choosing UI controls or
+storage classes. Each extension identifies its triggering step, the feedback,
+and the state change (none). The confirmation and absence of conflicting
+reservations give concrete success checks.
