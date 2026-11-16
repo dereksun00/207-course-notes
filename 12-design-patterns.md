@@ -65,6 +65,22 @@ To connect this back to our analogy: If someone has already proven a theorem thr
 
 > Exercise: As you read about each design pattern, think about how you could "derive" each pattern using one or more of our principles.
 
+**My answer: deriving the patterns from design principles**
+
+| Pattern | Design pressure and resulting structure |
+| --- | --- |
+| Simple Factory | SRP suggests moving object-selection and construction decisions out of clients into one creator. Clients use the product abstraction. A new product may still require editing this simple factory. |
+| Abstract Factory | DIP makes clients depend on a factory interface. OCP then lets a new concrete factory provide a consistent family of related products without changing those clients. |
+| Builder | SRP separates constructing a complicated object from using it. Named construction steps collect required and optional choices, and `build()` creates a valid result. |
+| Strategy | SRP separates a changing algorithm from its context. DIP puts an interface between them, and OCP permits new algorithms or runtime replacement without editing the context. |
+| Observer | DIP replaces the publisher's knowledge of particular listeners with a notification interface. OCP lets new listeners subscribe without changing the publisher; each listener owns its reaction. |
+| Façade | ISP suggests giving clients a small interface for the task they need. SRP puts subsystem coordination in a façade, so callers need fewer dependencies and do not duplicate that coordination. |
+| Adapter | DIP lets a client keep its expected interface while an adapter translates to an existing incompatible API. The adapter preserves the client's behavioral contract (LSP) and isolates translation as its responsibility (SRP). |
+
+These principles explain why a pattern might help; they do not make every
+pattern necessary. The extra classes are useful when they isolate a real source
+of change or complexity.
+
 ### 12.1.3. A Brief History
 
 <img src="images/gof-design-patterns-cover.jpg" height=200px align="right" alt="cover of the design patterns book"/>
