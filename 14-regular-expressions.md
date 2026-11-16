@@ -164,6 +164,10 @@ Here are some examples of strings which do not conform:
 > Do any of these strings conform to our regex?
 > "z3333", "aBcB041", "78a"
 
+**My answer:** `z3333` and `aBcB041` match `^[a-z][a-zA-Z0-9]*$`: each starts
+with a lowercase letter and continues with letters or digits. `78a` does not
+match because its first character is a digit.
+
 
 ### 14.4.1. What if There Are No Anchors?
 In the previous example, we introduced anchors:
