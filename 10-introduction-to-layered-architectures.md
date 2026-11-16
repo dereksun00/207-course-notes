@@ -83,6 +83,11 @@ Models are an important concept, because the entities represent how to think abo
 
 > Review Question: What level of policies do entities represent?
 
+**My answer:** Entities represent the highest-level policies: domain data and
+business rules farthest from input/output. They should not depend on a particular
+view or database. For example, an account can enforce its withdrawal limit
+regardless of whether the request came from a GUI or a command line.
+
 Here are a few _architecture patterns_, or ways to think about the organization of a program. You'll encounter these if you start following software design blogs. These are roughly in chronological order for when they were popular:
 
 * model view controller (MVC)
